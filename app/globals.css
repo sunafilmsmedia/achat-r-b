@@ -1,0 +1,191 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "DM Sans", "Elza", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --color-ink-950: #050b1a;
+  --color-ink-900: #0a1226;
+  --color-ink-800: #111a35;
+  --color-ink-700: #1a2447;
+
+  /* Thème clair Roux et Bachand — ramp ardoise/bleu (#303342, #757283).
+     Nombres bas = texte foncé lisible sur fond gris ; nombres hauts =
+     remplissages de boutons/cartes foncés. */
+  --color-brand-50: #eef0f4;
+  --color-brand-100: #2b2e3b;
+  --color-brand-200: #3c3f4f;
+  --color-brand-300: #5a5e70;
+  --color-brand-400: #454a5f;
+  --color-brand-500: #303342;
+  --color-brand-600: #292c39;
+  --color-brand-700: #202330;
+  --color-brand-800: #191b25;
+  --color-brand-900: #111219;
+
+  --color-gold: #757283;
+  --color-gold-soft: #8f8c9c;
+
+  /* Accents de marque Roux et Bachand (brief client) */
+  --color-slate-accent: #303342;
+  --color-slate-soft: #757283;
+
+  /* Textes secondaires assombris pour rester lisibles sur fond gris clair */
+  --color-slate-300: #4c5061;
+  --color-slate-400: #5b5f70;
+  --color-slate-500: #6b6f7e;
+  --color-slate-600: #474b5a;
+}
+
+html, body {
+  background: linear-gradient(180deg, #e8e9eb 0%, #dedfe1 45%, #d4d5d9 100%);
+  color: #303342;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Surface claire givrée (thème gris Roux et Bachand) */
+@utility glass-card {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(48, 51, 66, 0.1);
+  box-shadow:
+    0 24px 60px -28px rgba(48, 51, 66, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+@utility glass-card-light {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 30px 80px -30px rgba(20, 36, 95, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+/* AI shimmer — dégradé multicolore lent, reste doux */
+@keyframes ai-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.ai-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    #303342 0%,
+    #3a6dff 22%,
+    #7a5bd6 44%,
+    #303342 62%,
+    #3a6dff 82%,
+    #303342 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: ai-shimmer 8s linear infinite;
+}
+.ai-shimmer-fast {
+  background-image: linear-gradient(
+    90deg,
+    #303342 0%,
+    #3a6dff 22%,
+    #7a5bd6 44%,
+    #303342 62%,
+    #3a6dff 82%,
+    #303342 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: ai-shimmer 2.5s linear infinite;
+}
+
+/* Pulse dot */
+@keyframes soft-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: soft-pulse 1.8s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+/* Carte fond non-interactive — carte de Sherbrooke en gris, rues visibles */
+.map-mono {
+  filter: grayscale(1) contrast(1.04) brightness(1.0) opacity(0.6);
+}
+
+.map-no-interaction {
+  pointer-events: none !important;
+}
+
+/* Leaflet attribution discrète */
+.leaflet-container {
+  background: transparent !important;
+  font-family: var(--font-sans);
+}
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.6) !important;
+  color: rgba(48, 51, 66, 0.5) !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+  border-radius: 4px;
+}
+.leaflet-control-attribution a {
+  color: rgba(48, 51, 66, 0.75) !important;
+}
+
+/* Étiquettes (tooltips) Leaflet sur la carte régions */
+.region-label {
+  background: rgba(255, 255, 255, 0.97) !important;
+  border: 1px solid rgba(48, 51, 66, 0.25) !important;
+  color: #303342 !important;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 12px;
+  padding: 4px 10px !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 6px 20px -6px rgba(20, 36, 95, 0.3) !important;
+}
+.region-label::before {
+  display: none !important;
+}
+
+/* Scrollbar discrète */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(48, 51, 66, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(48, 51, 66, 0.4); }
+
+/* Inputs sans bordures par défaut */
+input, textarea, select {
+  background: transparent;
+  outline: none;
+  border: none;
+}
+input:focus, textarea:focus, select:focus { outline: none; }
