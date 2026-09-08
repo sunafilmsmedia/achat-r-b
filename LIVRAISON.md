@@ -78,6 +78,30 @@ n'apparaissent que quand la mise de fonds est le frein.
 complet (`financingStatus`, `secteurs`, `purchaseTimeline`, `journeyStage`,
 `buyingWith`, `householdIncome`, `downPayment`, `employment`).
 
+## Performance
+
+Le hero est **peint dès l'arrivée du HTML**, sans attendre React. C'est
+volontaire : les animations d'entrée du hero, des logos et du fond de carte
+sont en CSS (`anim-fade-up` / `anim-fade-in` dans `globals.css`), pas en
+framer-motion — sinon `opacity: 0` est sérialisé dans le HTML et le visiteur
+voit une page blanche jusqu'à l'hydratation. **Ne pas remettre de
+`motion.div` avec `initial={{ opacity: 0 }}` autour du contenu du hero.**
+
+Le fond de carte est une image statique (`public/carte-sherbrooke.webp`,
+~118 Ko, servie redimensionnée : ~21 Ko sur mobile) et non une carte Leaflet,
+ce qui économise 145 Ko de JS et ~48 requêtes de tuiles au chargement.
+Pour changer le secteur ou le zoom : modifier les constantes en haut de
+`scripts/generate-map.mjs` puis `node scripts/generate-map.mjs`.
+
+> ⚠️ Si tu régénères la carte **sans changer son nom de fichier**, purge le
+> cache d'images (`rm -rf .next/cache/images` en local ; sur Vercel, redeploy
+> ou renomme le fichier) — sinon l'ancienne version continue d'être servie.
+
+Reste comme leviers si besoin : framer-motion (~45 Ko gzip, encore utilisé par
+le questionnaire et les résultats), l'italique d'Instrument Serif (~15 Ko), et
+le délai artificiel de 2 s de l'écran d'analyse (`MIN_LOADING_MS` dans
+`app/page.tsx`).
+
 ## Dév local
 
 ```bash

@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "leaflet/dist/leaflet.css";
 
 @theme {
   --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
@@ -132,45 +131,10 @@ body {
   opacity: 0.5;
 }
 
-/* Carte fond non-interactive — carte de Sherbrooke en gris, rues visibles */
+/* Carte de fond — l'image est déjà en niveaux de gris (générée ainsi) */
 .map-mono {
-  filter: grayscale(1) contrast(1.04) brightness(1.0) opacity(0.6);
-}
-
-.map-no-interaction {
-  pointer-events: none !important;
-}
-
-/* Leaflet attribution discrète */
-.leaflet-container {
-  background: transparent !important;
-  font-family: var(--font-sans);
-}
-.leaflet-control-attribution {
-  background: rgba(255, 255, 255, 0.6) !important;
-  color: rgba(48, 51, 66, 0.5) !important;
-  font-size: 10px !important;
-  padding: 2px 6px !important;
-  border-radius: 4px;
-}
-.leaflet-control-attribution a {
-  color: rgba(48, 51, 66, 0.75) !important;
-}
-
-/* Étiquettes (tooltips) Leaflet sur la carte régions */
-.region-label {
-  background: rgba(255, 255, 255, 0.97) !important;
-  border: 1px solid rgba(48, 51, 66, 0.25) !important;
-  color: #303342 !important;
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 12px;
-  padding: 4px 10px !important;
-  border-radius: 9999px !important;
-  box-shadow: 0 6px 20px -6px rgba(20, 36, 95, 0.3) !important;
-}
-.region-label::before {
-  display: none !important;
+  filter: contrast(1.04) opacity(0.6);
+  pointer-events: none;
 }
 
 /* Scrollbar discrète */
@@ -189,3 +153,27 @@ input, textarea, select {
   border: none;
 }
 input:focus, textarea:focus, select:focus { outline: none; }
+
+/* ── Animations d'entrée du hero ─────────────────────────────────────────
+   En CSS et non en JS : le contenu est peint dès l'arrivée du HTML, sans
+   attendre l'hydratation de React. C'était la cause n°1 de l'écran blanc
+   au chargement (framer-motion sérialisait opacity:0 côté serveur). */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.anim-fade-up { animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.anim-fade-in { animation: fade-in 0.8s ease both; }
+
+.anim-delay-1 { animation-delay: 0.4s; }
+.anim-delay-2 { animation-delay: 0.6s; }
+.anim-delay-3 { animation-delay: 1.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up, .anim-fade-in { animation: none; }
+}

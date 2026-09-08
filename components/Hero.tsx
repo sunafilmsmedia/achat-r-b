@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 interface HeroProps {
   onStart: () => void;
 }
@@ -9,12 +7,7 @@ interface HeroProps {
 export default function Hero({ onStart }: HeroProps) {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start px-5 sm:px-8 pt-20 sm:pt-28 pb-32">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-3xl text-center"
-      >
+      <div className="max-w-3xl text-center anim-fade-up">
         {/* Chip */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-xs sm:text-sm text-[var(--color-brand-200)] mb-7 sm:mb-9">
           <span className="relative inline-flex w-2 h-2 rounded-full bg-[var(--color-gold)] text-[var(--color-gold)] pulse-dot" />
@@ -34,25 +27,15 @@ export default function Hero({ onStart }: HeroProps) {
         </p>
 
         {/* Hook signature */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="mt-8 font-serif italic text-xl sm:text-2xl ai-shimmer inline-block"
-        >
+        <p className="mt-8 font-serif italic text-xl sm:text-2xl ai-shimmer inline-block anim-fade-in anim-delay-1">
           Boosté par l&apos;IA
-        </motion.p>
+        </p>
 
         {/* Divider */}
         <div className="mt-8 sm:mt-10 mx-auto w-12 h-px bg-gradient-to-r from-transparent via-[var(--color-gold)] to-transparent" />
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.7 }}
-          className="mt-10 sm:mt-12 flex flex-col items-center gap-3"
-        >
+        <div className="mt-10 sm:mt-12 flex flex-col items-center gap-3 anim-fade-up anim-delay-2">
           <button
             onClick={onStart}
             className="
@@ -74,18 +57,13 @@ export default function Hero({ onStart }: HeroProps) {
             </svg>
           </button>
           <p className="text-xs text-slate-500">3 minutes — gratuit et confidentiel</p>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       {/* Scroll hint */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.5 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-24 sm:bottom-10 left-1/2 -translate-x-1/2 text-[10px] text-slate-500 uppercase tracking-[0.2em]"
-      >
+      <div className="absolute bottom-24 sm:bottom-10 left-1/2 -translate-x-1/2 text-[10px] text-slate-500 uppercase tracking-[0.2em] opacity-50 anim-fade-in anim-delay-3">
         Confidentiel · Sans engagement
-      </motion.div>
+      </div>
     </section>
   );
 }

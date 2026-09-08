@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script
           src="https://clarity-scanner.vercel.app/tracker.js"
           data-project="achat-r-b"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       </body>
     </html>

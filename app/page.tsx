@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import Hero from "@/components/Hero";
 import BrokerBadge from "@/components/BrokerBadge";
@@ -12,9 +11,8 @@ import PreRevealScreen from "@/components/PreRevealScreen";
 import LongTermScreen from "@/components/LongTermScreen";
 import ResultsScreen from "@/components/results/ResultsScreen";
 import { trackStep } from "@/lib/track";
+import HeroBackground from "@/components/HeroBackground";
 import type { AnalyzeResponse, Answers } from "@/lib/types";
-
-const HeroBackground = dynamic(() => import("@/components/HeroBackground"), { ssr: false });
 
 type Stage = "hero" | "form" | "loading" | "preReveal" | "results" | "longTerm";
 
@@ -94,8 +92,7 @@ export default function Home() {
         {stage === "hero" && (
           <motion.div
             key="bg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={false}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
             className="absolute inset-0 z-0"
@@ -107,7 +104,7 @@ export default function Home() {
 
       <AnimatePresence mode="wait">
         {stage === "hero" && (
-          <motion.div key="hero" className="relative z-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }}>
+          <motion.div key="hero" className="relative z-10" initial={false} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }}>
             <Hero onStart={() => { trackStep("debut"); setStage("form"); }} />
           </motion.div>
         )}

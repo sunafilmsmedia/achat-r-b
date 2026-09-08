@@ -1,53 +1,24 @@
-"use client";
+import Image from "next/image";
 
-import dynamic from "next/dynamic";
-import { useEffect } from "react";
-import { useMap } from "react-leaflet";
-
-const MapContainer = dynamic(() => import("react-leaflet").then((m) => m.MapContainer), { ssr: false });
-const TileLayer = dynamic(() => import("react-leaflet").then((m) => m.TileLayer), { ssr: false });
-
-// Centre sur le centre-ville de Sherbrooke pour la carte décorative du hero.
-const SHERBROOKE_CENTER: [number, number] = [45.4042, -71.8929];
-
-// La carte est montée dans un conteneur en fondu (absolute) : Leaflet calcule
-// sa taille avant que le conteneur ait ses dimensions finales et affiche des
-// tuiles pour un viewport de taille 0. On force le recalcul après le montage.
-function MapResizer() {
-  const map = useMap();
-  useEffect(() => {
-    const timers = [80, 300, 700].map((d) => setTimeout(() => map.invalidateSize(), d));
-    return () => timers.forEach(clearTimeout);
-  }, [map]);
-  return null;
-}
-
+// Fond décoratif du hero : une carte de Sherbrooke pré-rendue (tuiles Esri
+// assemblées et désaturées au moment de la génération, cf. LIVRAISON.md).
+//
+// Avant, c'était une carte Leaflet interactive-mais-figée : 145 Ko de JS et
+// ~48 requêtes de tuiles au chargement, pour une image que personne ne peut
+// manipuler. L'image statique donne exactement le même rendu en une requête.
 export default function HeroBackground() {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
-      <div className="map-mono map-no-interaction absolute inset-0">
-        <MapContainer
-          center={SHERBROOKE_CENTER}
-          zoom={13}
-          zoomControl={false}
-          attributionControl={true}
-          dragging={false}
-          touchZoom={false}
-          doubleClickZoom={false}
-          scrollWheelZoom={false}
-          boxZoom={false}
-          keyboard={false}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <TileLayer
-            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
-            attribution="Tiles &copy; Esri"
-          />
-          <MapResizer />
-        </MapContainer>
-      </div>
+      <Image
+        src="/carte-sherbrooke.webp"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover map-mono"
+      />
 
-      {/* Voile gris léger : la carte de Sherbrooke reste visible, le titre lisible */}
+      {/* Voile gris léger : la carte reste visible, le titre lisible */}
       <div
         className="absolute inset-0"
         style={{
@@ -62,6 +33,11 @@ export default function HeroBackground() {
             "linear-gradient(180deg, rgba(233,234,236,0.8) 0%, rgba(233,234,236,0.1) 22%, rgba(233,234,236,0.1) 70%, rgba(211,212,217,0.88) 100%)",
         }}
       />
+
+      {/* Attribution des tuiles — exigée par Esri */}
+      <span className="absolute bottom-1 right-2 text-[9px] text-[rgba(48,51,66,0.45)] select-none">
+        Tuiles © Esri
+      </span>
     </div>
   );
 }
