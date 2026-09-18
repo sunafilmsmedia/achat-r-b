@@ -28,7 +28,7 @@ export type JourneyStage =
   | "visites" // je visite des propriétés
   | "offres"; // j'ai déjà fait une ou des offres
 
-export type BuyingWith = "seul" | "couple";
+export type BuyingWith = "seul" | "co_acheteur" | "co_acheteurs";
 
 export type EmploymentStatus =
   | "salarie_permanent"
