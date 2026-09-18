@@ -9,37 +9,39 @@
   --color-ink-800: #111a35;
   --color-ink-700: #1a2447;
 
-  /* Thème clair Roux et Bachand — ramp ardoise/bleu (#303342, #757283).
-     Nombres bas = texte foncé lisible sur fond gris ; nombres hauts =
-     remplissages de boutons/cartes foncés. */
-  --color-brand-50: #eef0f4;
-  --color-brand-100: #2b2e3b;
-  --color-brand-200: #3c3f4f;
-  --color-brand-300: #5a5e70;
-  --color-brand-400: #454a5f;
-  --color-brand-500: #303342;
-  --color-brand-600: #292c39;
-  --color-brand-700: #202330;
-  --color-brand-800: #191b25;
-  --color-brand-900: #111219;
+  /* Thème sombre Roux et Bachand — fond bleu nuit, typographie grise.
+     Inverse du thème clair : nombres bas = texte clair posé sur le bleu ;
+     nombres hauts = remplissages de boutons et cartes. */
+  --color-brand-50: #f2f4f9;
+  --color-brand-100: #d8dce7;
+  --color-brand-200: #c0c6d6;
+  --color-brand-300: #939bb4;
+  --color-brand-400: #4f7dff;
+  --color-brand-500: #3a6dff;
+  --color-brand-600: #2f5ae0;
+  --color-brand-700: #1f3fb5;
+  --color-brand-800: #17244c;
+  --color-brand-900: #0f1937;
 
-  --color-gold: #757283;
-  --color-gold-soft: #8f8c9c;
+  /* Mauve-gris de la marque (#757283), éclairci pour rester lisible sur bleu */
+  --color-gold: #9c98ad;
+  --color-gold-soft: #b6b2c4;
 
   /* Accents de marque Roux et Bachand (brief client) */
-  --color-slate-accent: #303342;
+  --color-slate-accent: #9aa0b8;
   --color-slate-soft: #757283;
 
-  /* Textes secondaires assombris pour rester lisibles sur fond gris clair */
-  --color-slate-300: #4c5061;
-  --color-slate-400: #5b5f70;
-  --color-slate-500: #6b6f7e;
-  --color-slate-600: #474b5a;
+  /* Textes secondaires éclaircis pour rester lisibles sur fond bleu nuit */
+  --color-slate-300: #c2c7d4;
+  --color-slate-400: #a2a8bb;
+  --color-slate-500: #868ca0;
+  --color-slate-600: #6f7589;
 }
 
+
 html, body {
-  background: linear-gradient(180deg, #e8e9eb 0%, #dedfe1 45%, #d4d5d9 100%);
-  color: #303342;
+  background: linear-gradient(180deg, #0a1226 0%, #111a35 45%, #1a2447 100%);
+  color: #c2c7d4;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -50,25 +52,26 @@ body {
   overflow-x: hidden;
 }
 
-/* Surface claire givrée (thème gris Roux et Bachand) */
+/* Surface givrée sombre (thème bleu nuit Roux et Bachand) */
 @utility glass-card {
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
-  border: 1px solid rgba(48, 51, 66, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
-    0 24px 60px -28px rgba(48, 51, 66, 0.28),
-    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    0 24px 60px -28px rgba(0, 0, 0, 0.55),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
 }
 
+/* Variante plus dense — cartes posées au premier plan (badge courtier) */
 @utility glass-card-light {
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(23, 36, 76, 0.82);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow:
-    0 30px 80px -30px rgba(20, 36, 95, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    0 30px 80px -30px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 }
 
 @utility text-balance {
@@ -83,12 +86,12 @@ body {
 .ai-shimmer {
   background-image: linear-gradient(
     90deg,
-    #303342 0%,
+    #d8dce7 0%,
     #3a6dff 22%,
     #7a5bd6 44%,
-    #303342 62%,
+    #d8dce7 62%,
     #3a6dff 82%,
-    #303342 100%
+    #d8dce7 100%
   );
   background-size: 200% auto;
   background-clip: text;
@@ -100,12 +103,12 @@ body {
 .ai-shimmer-fast {
   background-image: linear-gradient(
     90deg,
-    #303342 0%,
+    #d8dce7 0%,
     #3a6dff 22%,
     #7a5bd6 44%,
-    #303342 62%,
+    #d8dce7 62%,
     #3a6dff 82%,
-    #303342 100%
+    #d8dce7 100%
   );
   background-size: 200% auto;
   background-clip: text;
@@ -131,9 +134,10 @@ body {
   opacity: 0.5;
 }
 
-/* Carte de fond — l'image est déjà en niveaux de gris (générée ainsi) */
+/* Carte de fond — image grise claire, inversée pour le thème bleu nuit
+   (rues claires sur fond sombre) */
 .map-mono {
-  filter: contrast(1.04) opacity(0.6);
+  filter: invert(1) contrast(0.9) opacity(0.5);
   pointer-events: none;
 }
 
@@ -141,10 +145,10 @@ body {
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(48, 51, 66, 0.25);
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 9999px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(48, 51, 66, 0.4); }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.32); }
 
 /* Inputs sans bordures par défaut */
 input, textarea, select {

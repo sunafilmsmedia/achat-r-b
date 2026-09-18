@@ -28,8 +28,8 @@ export default function ChoiceQuestion({ choices, value, onChange }: Props) {
               transition-all duration-200
               ${
                 selected
-                  ? "bg-gradient-to-br from-[var(--color-brand-500)] to-[var(--color-brand-700)] border border-[var(--color-brand-400)] shadow-[0_12px_30px_-10px_rgba(48,51,66,0.5)]"
-                  : "glass-card hover:border-[var(--color-slate-accent)]/20 hover:bg-white/70"
+                  ? "bg-gradient-to-br from-[var(--color-brand-500)] to-[var(--color-brand-700)] border border-[var(--color-brand-400)] shadow-[0_12px_30px_-10px_rgba(0, 0, 0, 0.65)]"
+                  : "glass-card hover:border-[var(--color-slate-accent)]/20 hover:bg-white/[0.09]"
               }
             `}
           >

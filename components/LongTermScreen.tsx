@@ -97,7 +97,7 @@ export default function LongTermScreen({ onRestart }: Props) {
         <div className="mt-8">
           <button
             onClick={onRestart}
-            className="text-xs text-slate-500 hover:text-[var(--color-brand-200)] transition-colors underline underline-offset-4 decoration-white/15"
+            className="text-xs text-slate-500 hover:text-[var(--color-brand-200)] transition-colors underline underline-offset-4 decoration-white/25"
           >
             Retour à l&apos;accueil
           </button>

@@ -86,9 +86,9 @@ export default function ContactForm({ answers, verdict, onSubmitted, gated }: Pr
       className="
         mt-12
         rounded-3xl p-6 sm:p-8
-        bg-white/65
+        bg-white/[0.06]
         border border-[var(--color-slate-accent)]/12
-        shadow-[0_30px_80px_-30px_rgba(48,51,66,0.3)]
+        shadow-[0_30px_80px_-30px_rgba(0, 0, 0, 0.45)]
       "
     >
       <div className="flex items-center gap-2 mb-1">
@@ -147,7 +147,7 @@ export default function ContactForm({ answers, verdict, onSubmitted, gated }: Pr
             onChange={(e) => setConsent(e.target.checked)}
             className="peer sr-only"
           />
-          <span className="block w-5 h-5 rounded-md border border-[var(--color-slate-accent)]/30 bg-white/70 peer-checked:bg-[var(--color-brand-500)] peer-checked:border-[var(--color-brand-400)] transition-colors" />
+          <span className="block w-5 h-5 rounded-md border border-[var(--color-slate-accent)]/30 bg-white/[0.09] peer-checked:bg-[var(--color-brand-500)] peer-checked:border-[var(--color-brand-400)] transition-colors" />
           <svg
             className="absolute inset-0 m-auto w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity"
             viewBox="0 0 12 12"
@@ -164,7 +164,7 @@ export default function ContactForm({ answers, verdict, onSubmitted, gated }: Pr
         </span>
       </label>
 
-      {error && <p className="mt-3 text-sm text-rose-600 text-center">{error}</p>}
+      {error && <p className="mt-3 text-sm text-rose-400 text-center">{error}</p>}
 
       <button
         type="button"

@@ -52,11 +52,11 @@ export default function BrokerBadge() {
         flex items-center gap-3.5
         no-underline cursor-pointer group
         transition-shadow duration-300
-        hover:shadow-[0_40px_100px_-30px_rgba(48,51,66,0.45)]
+        hover:shadow-[0_40px_100px_-30px_rgba(0, 0, 0, 0.60)]
       "
     >
       <div className="relative shrink-0">
-        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden ring-2 ring-white shadow-md bg-slate-100">
+        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden ring-2 ring-white/20 shadow-md bg-white/10">
           <Image
             src={b.photo}
             alt={b.name}
@@ -67,7 +67,7 @@ export default function BrokerBadge() {
             priority
           />
         </div>
-        <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 rounded-full ring-[2.5px] ring-white" aria-hidden>
+        <span className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-emerald-500 rounded-full ring-[2.5px] ring-white/20" aria-hidden>
           <span className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-50" />
         </span>
       </div>
@@ -75,11 +75,11 @@ export default function BrokerBadge() {
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          <span className="text-[10px] sm:text-[11px] font-medium text-emerald-700 uppercase tracking-wide">
+          <span className="text-[10px] sm:text-[11px] font-medium text-emerald-400 uppercase tracking-wide">
             Disponible maintenant
           </span>
         </div>
-        <p className="font-serif text-base sm:text-lg leading-tight text-slate-900 mt-0.5 truncate">
+        <p className="font-serif text-base sm:text-lg leading-tight text-[var(--color-brand-100)] mt-0.5 truncate">
           {b.name}
         </p>
         <p className="text-[11px] sm:text-xs text-slate-500 truncate">{b.title}</p>
@@ -91,8 +91,8 @@ export default function BrokerBadge() {
           w-11 h-11 sm:w-12 sm:h-12 rounded-full
           bg-gradient-to-br from-[var(--color-brand-500)] to-[var(--color-brand-700)]
           flex items-center justify-center
-          shadow-[0_8px_22px_-6px_rgba(48,51,66,0.5)]
-          group-hover:shadow-[0_12px_28px_-6px_rgba(48,51,66,0.65)]
+          shadow-[0_8px_22px_-6px_rgba(0, 0, 0, 0.65)]
+          group-hover:shadow-[0_12px_28px_-6px_rgba(0, 0, 0, 0.80)]
           transition-shadow
         ">
           <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8">

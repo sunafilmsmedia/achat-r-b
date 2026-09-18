@@ -13,7 +13,7 @@ export default function TopLogos() {
           width={750}
           height={194}
           priority
-          className="h-7 sm:h-9 w-auto"
+          className="h-7 sm:h-9 w-auto brightness-0 invert opacity-85"
         />
       </div>
 
@@ -27,7 +27,7 @@ export default function TopLogos() {
           width={1414}
           height={903}
           priority
-          className="h-7 sm:h-9 w-auto"
+          className="h-7 sm:h-9 w-auto brightness-0 invert opacity-85"
         />
       </div>
     </>

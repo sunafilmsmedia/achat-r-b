@@ -1,10 +1,17 @@
 # Roux et Bachand — ACHETEUR — `achat-r-b`
 
 Logiciel de qualification d'**acheteurs** pour l'équipe **Steve Bachand &
-Myriam Roux** (eXp, Estrie — Sherbrooke). Même identité visuelle que
-`eval-r-b` (version vendeur), mais un produit différent : au lieu d'un verdict
-de timing de vente, l'app calcule un **pouvoir d'achat** et chiffre **ce qu'il
-manque** en mise de fonds.
+Myriam Roux** (eXp, Estrie — Sherbrooke). Même structure que `eval-r-b`
+(version vendeur), mais un produit différent : au lieu d'un verdict de timing
+de vente, l'app calcule un **pouvoir d'achat** et chiffre **ce qu'il manque**
+en mise de fonds.
+
+**Thème inversé par rapport à `eval-r-b`** : fond bleu nuit, typographie grise.
+Toute la palette est dans le bloc `@theme` de `app/globals.css` — c'est le seul
+endroit à toucher pour la réajuster. Deux conséquences à connaître : les logos
+sont éclaircis en CSS (`brightness-0 invert` dans `TopLogos.tsx`, les PNG
+d'origine ont un texte foncé), et le fond de carte est inversé par le filtre
+`.map-mono` (l'image source reste une carte claire).
 
 ## Le parcours
 

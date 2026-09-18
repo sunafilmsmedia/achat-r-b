@@ -39,9 +39,9 @@ export default function PreRevealScreen({ onContinue }: Props) {
           initial={{ scale: 0, rotate: -20 }}
           animate={{ scale: 1, rotate: 0 }}
           transition={{ delay: 0.1, duration: 0.6, type: "spring", stiffness: 160, damping: 14 }}
-          className="mx-auto mb-7 w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400/25 to-[var(--color-brand-500)]/15 border border-emerald-500/40 flex items-center justify-center shadow-[0_10px_40px_-10px_rgba(48,51,66,0.3)]"
+          className="mx-auto mb-7 w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400/25 to-[var(--color-brand-500)]/15 border border-emerald-500/40 flex items-center justify-center shadow-[0_10px_40px_-10px_rgba(0, 0, 0, 0.45)]"
         >
-          <svg className="w-7 h-7 text-emerald-600" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <svg className="w-7 h-7 text-emerald-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5">
             <path d="M4 10L8 14L16 6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </motion.div>
@@ -91,9 +91,9 @@ export default function PreRevealScreen({ onContinue }: Props) {
               </svg>
             ) : (
               <span className="flex gap-0.5">
-                <span className="w-1 h-1 rounded-full bg-white/70 animate-pulse" />
-                <span className="w-1 h-1 rounded-full bg-white/70 animate-pulse" style={{ animationDelay: "0.15s" }} />
-                <span className="w-1 h-1 rounded-full bg-white/70 animate-pulse" style={{ animationDelay: "0.3s" }} />
+                <span className="w-1 h-1 rounded-full bg-white/[0.09] animate-pulse" />
+                <span className="w-1 h-1 rounded-full bg-white/[0.09] animate-pulse" style={{ animationDelay: "0.15s" }} />
+                <span className="w-1 h-1 rounded-full bg-white/[0.09] animate-pulse" style={{ animationDelay: "0.3s" }} />
               </span>
             )}
           </span>

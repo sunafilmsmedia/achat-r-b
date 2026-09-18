@@ -66,7 +66,7 @@ export default function RegionMultiSearch({ value, onChange }: Props) {
                 rounded-full pl-4 pr-3 py-2 text-sm font-medium
                 bg-gradient-to-br from-[var(--color-brand-500)] to-[var(--color-brand-700)]
                 text-white
-                shadow-[0_10px_26px_-12px_rgba(48,51,66,0.6)]
+                shadow-[0_10px_26px_-12px_rgba(0, 0, 0, 0.75)]
               "
             >
               {displayName(id)}
@@ -129,7 +129,7 @@ export default function RegionMultiSearch({ value, onChange }: Props) {
                 className="
                   w-full text-left glass-card rounded-xl px-4 py-3
                   flex items-center justify-between gap-3
-                  hover:bg-white/70 hover:border-[var(--color-slate-accent)]/20
+                  hover:bg-white/[0.09] hover:border-[var(--color-slate-accent)]/20
                   transition-colors group
                 "
               >

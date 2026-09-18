@@ -20,25 +20,25 @@ interface Props {
 const VERDICT_BADGE: Record<Verdict, { label: string; color: string; bg: string; ring: string }> = {
   pret: {
     label: "Prêt à acheter",
-    color: "text-emerald-600",
+    color: "text-emerald-400",
     bg: "bg-emerald-500/10",
     ring: "ring-emerald-500/30",
   },
   financement: {
     label: "Presque prêt",
-    color: "text-amber-600",
+    color: "text-amber-400",
     bg: "bg-amber-500/10",
     ring: "ring-amber-500/30",
   },
   mise_de_fonds: {
     label: "Presque prêt",
-    color: "text-amber-600",
+    color: "text-amber-400",
     bg: "bg-amber-500/10",
     ring: "ring-amber-500/30",
   },
   a_batir: {
     label: "Projet à bâtir",
-    color: "text-rose-600",
+    color: "text-rose-400",
     bg: "bg-rose-500/10",
     ring: "ring-rose-500/30",
   },
@@ -289,7 +289,7 @@ export default function ResultsScreen({ analyze, answers, revealChoice, onRestar
       <div className="mt-10 mb-24 sm:mb-12 text-center">
         <button
           onClick={onRestart}
-          className="text-sm text-slate-400 hover:text-[var(--color-brand-200)] transition-colors underline underline-offset-4 decoration-white/15 hover:decoration-[var(--color-brand-400)]"
+          className="text-sm text-slate-400 hover:text-[var(--color-brand-200)] transition-colors underline underline-offset-4 decoration-white/25 hover:decoration-[var(--color-brand-400)]"
         >
           Refaire l&apos;analyse
         </button>
@@ -319,9 +319,9 @@ function CapacityCard({
       className="
         relative overflow-hidden
         rounded-3xl p-7 sm:p-9
-        bg-white/70
+        bg-white/[0.09]
         border border-[var(--color-slate-accent)]/12
-        shadow-[0_30px_80px_-30px_rgba(48,51,66,0.35)]
+        shadow-[0_30px_80px_-30px_rgba(0, 0, 0, 0.50)]
       "
     >
       <div className="absolute -top-24 -right-24 w-60 h-60 rounded-full bg-[var(--color-brand-400)]/10 blur-3xl" />
@@ -393,7 +393,7 @@ function ConfirmationBlock({ stored, firstName }: { stored: boolean; firstName: 
       {stored ? (
         <>
           <div className="flex items-center gap-2 mb-2">
-            <svg className="w-5 h-5 text-emerald-600" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="w-5 h-5 text-emerald-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 7L10 3L17 7M3 7V15A2 2 0 0 0 5 17H15A2 2 0 0 0 17 15V7M3 7L10 11L17 7" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p className="font-serif text-xl sm:text-2xl text-[var(--color-brand-100)]">
@@ -451,8 +451,8 @@ function ScoreCard({ score, verdict }: { score: number; verdict: Verdict }) {
       className="
         relative overflow-hidden
         rounded-3xl p-7 sm:p-9
-        bg-gradient-to-br from-[var(--color-brand-800)] via-[var(--color-brand-700)] to-[var(--color-brand-900)]
-        shadow-[0_30px_80px_-30px_rgba(20,36,95,0.7),0_0_0_1px_rgba(255,255,255,0.06)_inset]
+        bg-gradient-to-br from-[#1b2a5e] via-[#24357f] to-[#131e44]
+        shadow-[0_30px_80px_-30px_rgba(0, 0, 0, 0.85),0_0_0_1px_rgba(255,255,255,0.06)_inset]
       "
     >
       <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-[var(--color-brand-400)]/20 blur-3xl" />
