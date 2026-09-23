@@ -22,6 +22,15 @@ const PROPERTY_LABEL: Record<string, string> = {
   ouvert: "propriété",
 };
 
+// La capacité n'est jamais affichée comme un chiffre exact : le montant réel
+// dépend des dettes et des paiements mensuels, qu'on ne demande pas ici.
+export function formatRange(low: number, high: number): string {
+  return `entre ${formatCurrency(low)} et ${formatCurrency(high)}`;
+}
+
+export const NUANCE_CAPACITE =
+  "Ça peut varier selon tes dettes, tes paiements mensuels, etc. On va t'appeler pour confirmer ta situation — ou te référer à un courtier hypothécaire si tu n'en as pas.";
+
 export function regionNames(answers: Answers): string[] {
   return (answers.regions ?? []).map(
     (id) => REGIONS.find((r) => r.id === id)?.name ?? id
@@ -31,15 +40,26 @@ export function regionNames(answers: Answers): string[] {
 function summaryFor(verdict: Verdict, answers: Answers, scoring: ScoringResult): string {
   const c = scoring.capacity;
   const type = PROPERTY_LABEL[answers.propertyType ?? "ouvert"] ?? "propriété";
+  const fourchette = formatRange(c.capacityLow, c.capacityHigh);
+
+  // Vendeur-acheteur : la mise de fonds sortira de sa vente, il n'y a donc
+  // aucun écart à combler — le sujet, c'est la coordination des deux.
+  if (c.downPaymentSource === "vente") {
+    return `Ta situation te permet de viser ${fourchette} pour ta prochaine ${type}. Ta mise de fonds viendra de la vente de ta propriété actuelle (estimée à ${formatCurrency(
+      c.currentHomeValue
+    )}) : la vraie question, c'est la coordination des deux transactions.`;
+  }
 
   switch (verdict) {
     case "pret":
-      return `Ta situation te permet de viser une ${type} autour de ${formatCurrency(
-        c.realisticBudget
+      return `Ta situation te permet de viser une ${type} ${formatRange(
+        c.capacityLow,
+        c.capacityHigh
       )} en Estrie. Financement, mise de fonds et échéancier sont alignés : la prochaine étape, c'est de regarder ce qui est réellement disponible dans tes secteurs.`;
     case "financement":
-      return `Ta mise de fonds soutient un budget d'environ ${formatCurrency(
-        c.realisticBudget
+      return `Ta situation soutient un budget ${formatRange(
+        c.capacityLow,
+        c.capacityHigh
       )}. Il te manque une seule pièce : la validation d'un prêteur. Une préqualification prend généralement moins de 48 heures et transforme ton budget en offre crédible.`;
     case "mise_de_fonds":
       return `Ta situation te permet de viser gros. La seule pièce qui manque, c'est la mise de fonds — et ça, ça se bâtit. Avec ${formatCurrency(
@@ -58,6 +78,33 @@ function stepsFor(verdict: Verdict, answers: Answers, scoring: ScoringResult) {
   const c = scoring.capacity;
   const secteurs = regionNames(answers);
   const secteurTexte = secteurs.length ? secteurs.slice(0, 3).join(", ") : "tes secteurs";
+
+  // Vendeur-acheteur : le plan porte sur la coordination des deux transactions,
+  // pas sur l'accumulation d'une mise de fonds.
+  if (c.downPaymentSource === "vente") {
+    return [
+      {
+        title: "Faire évaluer ta propriété actuelle",
+        description: `Ton estimation de ${formatCurrency(
+          c.currentHomeValue
+        )} est le point de départ. Une évaluation gratuite donne le montant net qui deviendra ta mise de fonds.`,
+      },
+      {
+        title: "Confirmer ta capacité avec un prêteur",
+        description:
+          "Un prêteur validera ce que tu peux acheter en tenant compte de ton hypothèque actuelle et de tes dettes.",
+      },
+      {
+        title: "Choisir la séquence : vendre d'abord ou acheter d'abord",
+        description:
+          "Achat conditionnel à la vente, prêt-relais, dates de prise de possession : c'est là que se joue la tranquillité d'esprit.",
+      },
+      {
+        title: "Préparer les deux dossiers en parallèle",
+        description: `On prépare la mise en marché pendant qu'on surveille ${secteurTexte} pour ta prochaine propriété.`,
+      },
+    ];
+  }
 
   switch (verdict) {
     case "pret":
@@ -108,7 +155,7 @@ function stepsFor(verdict: Verdict, answers: Answers, scoring: ScoringResult) {
           title: "Chiffrer ton objectif de mise de fonds",
           description: `Vise ${formatCurrency(
             c.requiredDownForCapacity
-          )} pour débloquer ${formatCurrency(c.maxByIncome)} — il te manque ${formatCurrency(
+          )} pour atteindre le haut de ta fourchette — il te manque ${formatCurrency(
             c.downPaymentGap
           )}.`,
         },
@@ -160,14 +207,16 @@ export function buildFallbackReport(answers: Answers, scoring: ScoringResult): R
   const stats = [
     {
       label: "Ce que ta situation pourrait supporter",
-      value: formatCurrency(c.maxByIncome),
-      detail: "Estimation basée sur le revenu du ménage, ton profil d'emploi et la mise de fonds minimale exigée.",
+      value: formatRange(c.capacityLow, c.capacityHigh),
+      detail: NUANCE_CAPACITE,
     },
     {
       label: "Budget réaliste aujourd'hui",
       value: formatCurrency(c.realisticBudget),
       detail:
-        c.limitedBy === "mise_de_fonds"
+        c.downPaymentSource === "vente"
+          ? "Sous réserve du produit net de la vente de ta propriété actuelle."
+          : c.limitedBy === "mise_de_fonds"
           ? "Ce que ta mise de fonds actuelle te permet de viser dès maintenant."
           : "Ce que ta situation globale te permet de viser dès maintenant.",
     },
@@ -182,7 +231,11 @@ export function buildFallbackReport(answers: Answers, scoring: ScoringResult): R
       label: "Mise de fonds visée",
       value: formatCurrency(c.requiredDownForCapacity),
       detail:
-        c.downPaymentGap > 0
+        c.downPaymentSource === "vente"
+          ? `À confirmer avec le produit net de ta vente (propriété estimée à ${formatCurrency(
+              c.currentHomeValue
+            )}).`
+          : c.downPaymentGap > 0
           ? `Il te manque ${formatCurrency(c.downPaymentGap)} pour débloquer ta pleine capacité.`
           : "Ta mise de fonds actuelle couvre déjà le minimum exigé pour ta capacité.",
     },

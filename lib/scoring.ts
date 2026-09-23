@@ -96,7 +96,11 @@ export function computeScoring(answers: Answers): ScoringResult {
   // ── Mise de fonds vs capacité ─────────────────────────────────────────────
   const requis = capacity.requiredDownForCapacity;
   const manque = capacity.downPaymentGap;
-  if (capacity.maxByIncome > 0 && requis > 0) {
+  if (capacity.downPaymentSource === "vente") {
+    // La mise de fonds viendra de la vente : aucun écart à calculer, mais
+    // l'équité accumulée est un signal fort.
+    add(4, "Mise de fonds attendue de la vente de ta propriété actuelle", "positive");
+  } else if (capacity.maxByIncome > 0 && requis > 0) {
     const ratioManque = manque / requis;
     if (manque <= 0) {
       add(15, "Mise de fonds suffisante pour ta pleine capacité", "positive");
@@ -133,9 +137,16 @@ function verdictFor(
   // Projet à bâtir : le revenu ne supporte pas encore un achat crédible.
   if (capacity.maxByIncome < 150_000 || score < 35) return "a_batir";
 
-  // Mise de fonds : la capacité existe, mais le comptant la bride.
+  // Mise de fonds : la capacité existe, mais le comptant la bride. Sans objet
+  // quand la mise de fonds viendra de la vente de la propriété actuelle.
   const requis = capacity.requiredDownForCapacity;
-  if (requis > 0 && capacity.downPaymentGap > requis * 0.05) return "mise_de_fonds";
+  if (
+    capacity.downPaymentSource !== "vente" &&
+    requis > 0 &&
+    capacity.downPaymentGap > requis * 0.05
+  ) {
+    return "mise_de_fonds";
+  }
 
   // Financement : tout est là sauf la validation d'un prêteur.
   if (
