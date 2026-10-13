@@ -99,7 +99,7 @@ export default function RegionMultiSearch({ value, onChange }: Props) {
           onKeyDown={handleKeyDown}
           placeholder={
             full
-              ? `${MAX_SECTEURS} secteurs choisis — retire-en un pour changer`
+              ? `${MAX_SECTEURS} secteur${MAX_SECTEURS > 1 ? "s" : ""} choisi${MAX_SECTEURS > 1 ? "s" : ""} — retire-en un pour changer`
               : "Écris un secteur (ex. Sherbrooke, Magog…)"
           }
           className="

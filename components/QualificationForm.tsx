@@ -9,6 +9,7 @@ import ProgressBar from "./ProgressBar";
 import ChoiceQuestion from "./questions/ChoiceQuestion";
 import CurrencyQuestion from "./questions/CurrencyQuestion";
 import RegionMultiSearch from "./questions/RegionMultiSearch";
+import ExistingBrokerBlocker from "./questions/ExistingBrokerBlocker";
 
 interface Props {
   onComplete: (answers: Answers) => void;
@@ -31,6 +32,7 @@ const STEP_NAMES: Record<string, string> = {
   downPayment: "mise_de_fonds",
   currentHomeValue: "valeur_propriete",
   employment: "emploi",
+  workingWithBroker: "courtier_deja",
 };
 
 // Champs dont la valeur est un choix prédéfini → sûr à transmettre.
@@ -41,6 +43,7 @@ const CHOICE_FIELDS = new Set([
   "journeyStage",
   "buyingWith",
   "employment",
+  "workingWithBroker",
 ]);
 
 function trackAnswer(partial: Partial<Answers>) {
@@ -61,6 +64,12 @@ export default function QualificationForm({ onComplete, onLongTerm, onExit }: Pr
   const current = visible[Math.min(index, visible.length - 1)];
   const isLast = index >= visible.length - 1;
   const canProceed = current ? isAnswered(current, answers) : false;
+
+  // Le blocker "tu as déjà un courtier" remplace la question pour ce step.
+  const isBlocked =
+    current?.id === "workingWithBroker" &&
+    answers.workingWithBroker === "oui" &&
+    answers.wantsToSwitch !== true;
 
   const submit = useCallback(() => {
     if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
@@ -88,6 +97,10 @@ export default function QualificationForm({ onComplete, onLongTerm, onExit }: Pr
       let nextAnswers: Answers = answers;
       setAnswers((prev) => {
         const next = { ...prev, ...partial };
+        // Réinitialiser wantsToSwitch si on change la réponse à workingWithBroker
+        if ("workingWithBroker" in partial && partial.workingWithBroker !== "oui") {
+          delete next.wantsToSwitch;
+        }
         nextAnswers = next;
         return next;
       });
@@ -101,7 +114,12 @@ export default function QualificationForm({ onComplete, onLongTerm, onExit }: Pr
         return;
       }
 
-      if (autoAdvance) {
+      // Bloque l'auto-advance quand workingWithBroker="oui" sans wantsToSwitch :
+      // le composant ExistingBrokerBlocker prend le relais.
+      const wouldBeBlocked =
+        nextAnswers.workingWithBroker === "oui" && nextAnswers.wantsToSwitch !== true;
+
+      if (autoAdvance && !wouldBeBlocked) {
         trackAnswer(partial);
         if (autoAdvanceTimer.current) clearTimeout(autoAdvanceTimer.current);
         autoAdvanceTimer.current = setTimeout(() => {
@@ -153,14 +171,16 @@ export default function QualificationForm({ onComplete, onLongTerm, onExit }: Pr
             exit={{ opacity: 0, x: direction * -60 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="mb-7 sm:mb-9">
-              <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[var(--color-brand-100)] leading-tight tracking-tight text-balance">
-                {current.title}
-              </h2>
-              {current.subtitle && (
-                <p className="mt-2.5 text-sm sm:text-base text-slate-400">{current.subtitle}</p>
-              )}
-            </div>
+            {!isBlocked && (
+              <div className="mb-7 sm:mb-9">
+                <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[var(--color-brand-100)] leading-tight tracking-tight text-balance">
+                  {current.title}
+                </h2>
+                {current.subtitle && (
+                  <p className="mt-2.5 text-sm sm:text-base text-slate-400">{current.subtitle}</p>
+                )}
+              </div>
+            )}
 
             <QuestionRenderer
               questionId={current.id}
@@ -206,7 +226,7 @@ export default function QualificationForm({ onComplete, onLongTerm, onExit }: Pr
                 transition-all
               "
             >
-              Voir mon analyse
+              Voir mon guide gratuit
               <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M5 10h10M11 6l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -268,7 +288,9 @@ function QuestionRenderer({ questionId, answers, choices, autoAdvance, onUpdate 
       return (
         <RegionMultiSearch
           value={answers.regions}
-          onChange={(ids) => onUpdate({ regions: ids }, false)}
+          // Un seul secteur (MAX_SECTEURS=1) : dès qu'on en choisit un, on
+          // avance automatiquement. ids=[] (retrait du chip) ne fait pas avancer.
+          onChange={(ids) => onUpdate({ regions: ids }, ids.length > 0)}
         />
       );
     case "purchaseTimeline":
@@ -328,6 +350,24 @@ function QuestionRenderer({ questionId, answers, choices, autoAdvance, onUpdate 
           choices={choices!}
           value={answers.employment}
           onChange={(v) => onUpdate({ employment: v as Answers["employment"] }, autoAdvance)}
+        />
+      );
+    case "workingWithBroker":
+      // Quand workingWithBroker="oui" sans wantsToSwitch, on remplace la
+      // question par le blocker légal qui propose "Je veux changer" pour débloquer.
+      if (answers.workingWithBroker === "oui" && answers.wantsToSwitch !== true) {
+        return (
+          <ExistingBrokerBlocker
+            onWantsToSwitch={() => onUpdate({ wantsToSwitch: true }, true)}
+            onCancel={() => onUpdate({ workingWithBroker: undefined, wantsToSwitch: undefined }, false)}
+          />
+        );
+      }
+      return (
+        <ChoiceQuestion
+          choices={choices!}
+          value={answers.workingWithBroker}
+          onChange={(v) => onUpdate({ workingWithBroker: v as Answers["workingWithBroker"] }, autoAdvance)}
         />
       );
     default:

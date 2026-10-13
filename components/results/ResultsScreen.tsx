@@ -77,18 +77,24 @@ export default function ResultsScreen({ analyze, answers, revealChoice, onRestar
           </div>
 
           <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-brand-300)] mb-3">
-            Analyse complète disponible
+            Ce que tu pourrais acheter
           </p>
-          <h1 className="font-serif text-4xl sm:text-5xl text-[var(--color-brand-100)] leading-[1.1] tracking-tight text-balance">
-            Ton pouvoir d&apos;achat est calculé.
-          </h1>
-          <p className="mt-5 text-base sm:text-lg text-slate-400 leading-relaxed text-balance max-w-md mx-auto">
-            Laisse-nous ton contact pour débloquer ton portrait complet et recevoir
-            ton appel personnalisé avec Steve ou Myriam.
+
+          {/* Estimation — affichée directement, sans clic ni écran de plus */}
+          <p className="font-serif text-[2.1rem] sm:text-5xl lg:text-6xl text-[var(--color-brand-100)] leading-tight text-balance">
+            {formatRange(capacity.capacityLow, capacity.capacityHigh)}
+          </p>
+          <p className="mt-3 text-xs sm:text-sm text-slate-500 leading-relaxed max-w-sm mx-auto">
+            {NUANCE_CAPACITE}
+          </p>
+
+          <p className="mt-7 text-base sm:text-lg text-slate-400 leading-relaxed text-balance max-w-md mx-auto">
+            Entre tes informations pour recevoir le détail complet — budget réaliste,
+            mise de fonds visée, paiement mensuel et prochaines étapes.
           </p>
         </motion.div>
 
-        <div className="mt-10">
+        <div className="mt-8">
           <ContactForm
             answers={answers}
             verdict={scoring.verdict}
@@ -293,10 +299,10 @@ export default function ResultsScreen({ analyze, answers, revealChoice, onRestar
           onClick={onRestart}
           className="text-sm text-slate-400 hover:text-[var(--color-brand-200)] transition-colors underline underline-offset-4 decoration-white/25 hover:decoration-[var(--color-brand-400)]"
         >
-          Refaire l&apos;analyse
+          Refaire le guide gratuit
         </button>
         <p className="mt-6 text-[10px] text-slate-600 uppercase tracking-[0.2em]">
-          Analyse {analyze.generatedBy === "claude" ? "IA" : "déterministe"} · Roux et Bachand · Estrie
+          Guide gratuit {analyze.generatedBy === "claude" ? "IA" : "déterministe"} · Roux et Bachand · Estrie
         </p>
       </div>
     </div>
@@ -412,7 +418,7 @@ function ConfirmationBlock({ stored, firstName }: { stored: boolean; firstName: 
             </p>
           </div>
           <p className="text-sm sm:text-base text-[var(--color-slate-300)] leading-relaxed">
-            Tu vas recevoir ton analyse complète par courriel dans les prochaines minutes,
+            Tu vas recevoir ton guide gratuit complet par courriel dans les prochaines minutes,
             et Steve ou Myriam te contactera pour valider tes chiffres avec toi.
           </p>
         </>
@@ -428,7 +434,7 @@ function ConfirmationBlock({ stored, firstName }: { stored: boolean; firstName: 
             </p>
           </div>
           <p className="text-sm sm:text-base text-[var(--color-gold-soft)]/85 leading-relaxed">
-            Ton analyse reste affichée ici. Reviens nous voir quand tu voudras en parler
+            Ton guide gratuit reste affiché ici. Reviens nous voir quand tu voudras en parler
             à quelqu&apos;un.
           </p>
         </>

@@ -10,7 +10,8 @@ export type QuestionId =
   | "householdIncome"
   | "downPayment"
   | "currentHomeValue"
-  | "employment";
+  | "employment"
+  | "workingWithBroker";
 
 export type QuestionKind = "choice" | "regions" | "currency";
 
@@ -61,8 +62,9 @@ export const QUESTIONS: QuestionDef[] = [
   {
     id: "regions",
     kind: "regions",
-    title: "Quels secteurs t'intéressent le plus ?",
-    subtitle: "Choisis-en jusqu'à 3 — ou écris le tien.",
+    title: "Quel secteur t'intéresse le plus ?",
+    subtitle: "Choisis-le dans la liste — ou écris le tien.",
+    autoAdvance: true,
   },
   {
     id: "purchaseTimeline",
@@ -140,6 +142,17 @@ export const QUESTIONS: QuestionDef[] = [
       { value: "transition", label: "En transition", hint: "Entre deux emplois, études…" },
     ],
   },
+  {
+    id: "workingWithBroker",
+    kind: "choice",
+    title: "Travailles-tu déjà avec un courtier immobilier ?",
+    subtitle: "Pour qu'on sache comment mieux t'accompagner.",
+    autoAdvance: true,
+    choices: [
+      { value: "non", label: "Non", hint: "Je n'ai pas encore de courtier" },
+      { value: "oui", label: "Oui", hint: "Je travaille déjà avec quelqu'un" },
+    ],
+  },
 ];
 
 export function getVisibleQuestions(answers: Answers): QuestionDef[] {
@@ -158,5 +171,11 @@ export function isAnswered(q: QuestionDef, a: Answers): boolean {
     case "downPayment": return typeof a.downPayment === "number" && a.downPayment >= 0;
     case "currentHomeValue": return typeof a.currentHomeValue === "number" && a.currentHomeValue > 0;
     case "employment": return !!a.employment;
+    case "workingWithBroker":
+      // "Non" = on peut continuer. "Oui" = bloqué SAUF si la personne
+      // clique "Je veux changer" (wantsToSwitch = true).
+      if (a.workingWithBroker === "non") return true;
+      if (a.workingWithBroker === "oui" && a.wantsToSwitch === true) return true;
+      return false;
   }
 }

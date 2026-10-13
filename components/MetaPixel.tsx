@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import Script from "next/script";
+import { captureFbclid } from "@/lib/attribution";
 
 // Pixel Meta — À REMPLIR AU DÉPLOIEMENT (nouvelle app = nouveau pixel). Vide = aucun script Meta injecté.
 const PIXEL_ID = "1945058732782631";
@@ -12,6 +14,12 @@ declare global {
 }
 
 export default function MetaPixel() {
+  // Capture le fbclid indépendamment du pixel lui-même : on veut l'attribution
+  // même si PIXEL_ID n'est pas encore renseigné pour ce déploiement.
+  useEffect(() => {
+    captureFbclid();
+  }, []);
+
   if (!PIXEL_ID) return null;
   return (
     <>

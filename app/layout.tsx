@@ -22,12 +22,12 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Roux et Bachand — Quelle propriété peux-tu vraiment acheter ?",
   description:
-    "Une analyse personnalisée, propulsée par l'intelligence artificielle, pour connaître ton pouvoir d'achat réel et ce qu'il te manque pour acheter en Estrie.",
+    "Un guide gratuit personnalisé, propulsé par l'intelligence artificielle, pour connaître ton pouvoir d'achat réel et ce qu'il te manque pour acheter en Estrie.",
   metadataBase: new URL("https://rouxetbachand.example"),
   openGraph: {
     title: "Quelle propriété peux-tu vraiment acheter ?",
     description:
-      "Analyse d'achat personnalisée — Équipe Roux et Bachand, courtiers immobiliers en Estrie.",
+      "Guide d'achat gratuit personnalisé — Équipe Roux et Bachand, courtiers immobiliers en Estrie.",
     locale: "fr_CA",
   },
 };

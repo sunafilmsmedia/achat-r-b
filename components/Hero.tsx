@@ -11,7 +11,7 @@ export default function Hero({ onStart }: HeroProps) {
         {/* Chip */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-xs sm:text-sm text-[var(--color-brand-200)] mb-7 sm:mb-9">
           <span className="relative inline-flex w-2 h-2 rounded-full bg-[var(--color-gold)] text-[var(--color-gold)] pulse-dot" />
-          <span className="font-medium tracking-wide">Analyse d&apos;achat personnalisée</span>
+          <span className="font-medium tracking-wide">Sherbrooke</span>
         </div>
 
         {/* Titre H1 */}

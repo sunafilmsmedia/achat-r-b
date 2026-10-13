@@ -38,6 +38,8 @@ export type EmploymentStatus =
   | "retraite"
   | "transition"; // entre deux emplois, retour aux études, etc.
 
+export type WorkingWithBroker = "oui" | "non";
+
 export type Region = {
   id: string;
   name: string;
@@ -59,6 +61,11 @@ export interface Answers {
   // d'acheter : sa mise de fonds sortira de cette vente.
   currentHomeValue?: number;
   employment?: EmploymentStatus;
+  // Dernière question : workingWithBroker="oui" bloque le formulaire — on ne
+  // veut pas de gens déjà sous contrat avec un autre courtier. wantsToSwitch
+  // débloque (la personne n'est pas satisfaite et veut changer).
+  workingWithBroker?: WorkingWithBroker;
+  wantsToSwitch?: boolean;
 }
 
 // ── Capacité d'achat (calcul déterministe, lib/capacity.ts) ─────────────────

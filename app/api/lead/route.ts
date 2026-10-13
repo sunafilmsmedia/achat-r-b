@@ -8,6 +8,7 @@ export const runtime = "nodejs";
 interface IncomingBody extends Partial<LeadPayload> {
   answers?: Answers;
   leadType?: LeadType;
+  fbclid?: string;
 }
 
 function splitName(full: string): { firstName: string; lastName: string } {
@@ -47,7 +48,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { name, phone, email, consent, answers } = body;
+  const { name, phone, email, consent, answers, fbclid } = body;
   const leadType: LeadType = body.leadType ?? "acheteur";
 
   if (!name || !email || !consent || !answers) {
@@ -82,6 +83,10 @@ export async function POST(req: Request) {
     phone: phone ?? "",
     email,
 
+    // Attribution pub Meta — toujours présent (vide si le lead ne vient pas
+    // d'un clic sur une pub Facebook/Instagram).
+    fbclid: fbclid ?? "",
+
     // Scoring
     score: scoring.score,
     verdict: scoring.verdict, // pret | financement | mise_de_fonds | a_batir
@@ -113,6 +118,7 @@ export async function POST(req: Request) {
     downPayment: answers.downPayment ?? 0,
     currentHomeValue: answers.currentHomeValue ?? 0,
     employment: answers.employment ?? "",
+    travailleDejaAvecCourtier: answers.workingWithBroker ?? "",
 
     // Données brutes
     lead: { name, phone, email },
