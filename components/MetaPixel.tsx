@@ -3,7 +3,7 @@
 import Script from "next/script";
 
 // Pixel Meta — À REMPLIR AU DÉPLOIEMENT (nouvelle app = nouveau pixel). Vide = aucun script Meta injecté.
-const PIXEL_ID = "";
+const PIXEL_ID = "1945058732782631";
 
 declare global {
   interface Window {
