@@ -16,14 +16,12 @@ export default function Hero({ onStart }: HeroProps) {
 
         {/* Titre H1 */}
         <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-[var(--color-brand-100)] leading-[1.05] tracking-tight text-balance">
-          Quelle propriété peux-tu vraiment acheter ?
+          Quelle maison peux-tu vraiment te permettre ?
         </h1>
 
         {/* Sous-titre */}
         <p className="mt-6 text-base sm:text-lg text-slate-400 max-w-xl mx-auto leading-relaxed text-balance">
-          Neuf questions, trois minutes. Tu repars avec ce que ta situation pourrait
-          supporter, ton budget réaliste aujourd&apos;hui, et ce qu&apos;il te manque
-          exactement pour débloquer le reste.
+          Découvre ton budget immobilier estimé en 60 secondes et les propriétés à ta portée.
         </p>
 
         {/* Hook signature */}

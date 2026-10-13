@@ -20,12 +20,12 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Roux et Bachand — Quelle propriété peux-tu vraiment acheter ?",
+  title: "Roux et Bachand — Quelle maison peux-tu vraiment te permettre ?",
   description:
     "Un guide gratuit personnalisé, propulsé par l'intelligence artificielle, pour connaître ton pouvoir d'achat réel et ce qu'il te manque pour acheter en Estrie.",
   metadataBase: new URL("https://rouxetbachand.example"),
   openGraph: {
-    title: "Quelle propriété peux-tu vraiment acheter ?",
+    title: "Quelle maison peux-tu vraiment te permettre ?",
     description:
       "Guide d'achat gratuit personnalisé — Équipe Roux et Bachand, courtiers immobiliers en Estrie.",
     locale: "fr_CA",
