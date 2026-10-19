@@ -362,13 +362,6 @@ function CapacityCard({
 
         {hasGap && (
           <div className="mt-6 space-y-3">
-            <div className="rounded-2xl bg-[var(--color-brand-500)]/[0.07] border border-[var(--color-brand-400)]/20 px-4 py-3.5">
-              <p className="text-sm text-[var(--color-brand-100)] leading-relaxed">
-                💡 Ta mise de fonds actuelle ({formatCurrency(downPayment)}) te limite à{" "}
-                <strong className="font-semibold">{formatCurrency(capacity.maxByDownPayment)}</strong>{" "}
-                aujourd&apos;hui.
-              </p>
-            </div>
             <div className="rounded-2xl bg-[var(--color-gold)]/[0.09] border border-[var(--color-gold)]/30 px-4 py-3.5">
               <p className="text-sm text-[var(--color-brand-100)] leading-relaxed">
                 🎯 Pour débloquer ton plein potentiel, vise une mise d&apos;environ{" "}
@@ -376,6 +369,13 @@ function CapacityCard({
                   {formatCurrency(capacity.requiredDownForCapacity)}
                 </strong>{" "}
                 — il te manque {formatCurrency(capacity.downPaymentGap)}.
+              </p>
+            </div>
+            <div className="rounded-2xl bg-[var(--color-brand-500)]/[0.07] border border-[var(--color-brand-400)]/20 px-4 py-3.5">
+              <p className="text-sm text-[var(--color-brand-100)] leading-relaxed">
+                💡 Ta mise de fonds actuelle ({formatCurrency(downPayment)}) te limite à{" "}
+                <strong className="font-semibold">{formatCurrency(capacity.maxByDownPayment)}</strong>{" "}
+                aujourd&apos;hui.
               </p>
             </div>
           </div>

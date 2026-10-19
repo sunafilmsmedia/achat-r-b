@@ -3,7 +3,7 @@
 import Script from "next/script";
 
 // Microsoft Clarity — À REMPLIR AU DÉPLOIEMENT. Vide = aucun script Clarity injecté.
-const CLARITY_PROJECT_ID = "";
+const CLARITY_PROJECT_ID = "yzwhjqav12";
 
 export default function Clarity() {
   if (!CLARITY_PROJECT_ID) return null;
