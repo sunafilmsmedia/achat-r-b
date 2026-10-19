@@ -10,6 +10,7 @@ import ChoiceQuestion from "./questions/ChoiceQuestion";
 import CurrencyQuestion from "./questions/CurrencyQuestion";
 import RegionMultiSearch from "./questions/RegionMultiSearch";
 import ExistingBrokerBlocker from "./questions/ExistingBrokerBlocker";
+import ContactQuestion from "./questions/ContactQuestion";
 
 interface Props {
   onComplete: (answers: Answers) => void;
@@ -33,6 +34,7 @@ const STEP_NAMES: Record<string, string> = {
   currentHomeValue: "valeur_propriete",
   employment: "emploi",
   workingWithBroker: "courtier_deja",
+  contact: "coordonnees",
 };
 
 // Champs dont la valeur est un choix prédéfini → sûr à transmettre.
@@ -370,6 +372,8 @@ function QuestionRenderer({ questionId, answers, choices, autoAdvance, onUpdate 
           onChange={(v) => onUpdate({ workingWithBroker: v as Answers["workingWithBroker"] }, autoAdvance)}
         />
       );
+    case "contact":
+      return <ContactQuestion answers={answers} onUpdate={onUpdate} />;
     default:
       return null;
   }

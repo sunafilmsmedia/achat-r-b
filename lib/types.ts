@@ -66,6 +66,13 @@ export interface Answers {
   // débloque (la personne n'est pas satisfaite et veut changer).
   workingWithBroker?: WorkingWithBroker;
   wantsToSwitch?: boolean;
+  // Coordonnées — dernière étape du formulaire, AVANT le calcul IA (plus de
+  // volet "entre tes infos pour débloquer" après les résultats : le lead est
+  // soumis dès la fin du questionnaire, en même temps que l'analyse se calcule).
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  consent?: boolean;
 }
 
 // ── Capacité d'achat (calcul déterministe, lib/capacity.ts) ─────────────────

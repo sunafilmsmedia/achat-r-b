@@ -11,9 +11,10 @@ export type QuestionId =
   | "downPayment"
   | "currentHomeValue"
   | "employment"
-  | "workingWithBroker";
+  | "workingWithBroker"
+  | "contact";
 
-export type QuestionKind = "choice" | "regions" | "currency";
+export type QuestionKind = "choice" | "regions" | "currency" | "contact";
 
 export interface Choice<V extends string = string> {
   value: V;
@@ -153,6 +154,12 @@ export const QUESTIONS: QuestionDef[] = [
       { value: "oui", label: "Oui", hint: "Je travaille déjà avec quelqu'un" },
     ],
   },
+  {
+    id: "contact",
+    kind: "contact",
+    title: "Dernière étape avant ton guide gratuit",
+    subtitle: "Pour que Steve ou Myriam puisse te contacter avec les détails complets.",
+  },
 ];
 
 export function getVisibleQuestions(answers: Answers): QuestionDef[] {
@@ -177,5 +184,13 @@ export function isAnswered(q: QuestionDef, a: Answers): boolean {
       if (a.workingWithBroker === "non") return true;
       if (a.workingWithBroker === "oui" && a.wantsToSwitch === true) return true;
       return false;
+    case "contact": {
+      const name = (a.fullName ?? "").trim();
+      const email = (a.email ?? "").trim();
+      const phone = (a.phone ?? "").trim();
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const phoneDigits = phone.replace(/\D/g, "");
+      return !!name && emailValid && phoneDigits.length >= 10 && !!a.consent;
+    }
   }
 }
