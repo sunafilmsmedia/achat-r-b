@@ -12,9 +12,12 @@ export type QuestionId =
   | "currentHomeValue"
   | "employment"
   | "workingWithBroker"
-  | "contact";
+  | "fullName"
+  | "email"
+  | "phone"
+  | "consent";
 
-export type QuestionKind = "choice" | "regions" | "currency" | "contact";
+export type QuestionKind = "choice" | "regions" | "currency" | "text" | "consent";
 
 export interface Choice<V extends string = string> {
   value: V;
@@ -30,6 +33,11 @@ export interface QuestionDef {
   choices?: Choice[];
   autoAdvance?: boolean;
   showIf?: (a: Answers) => boolean;
+  // kind "text" seulement.
+  inputType?: "text" | "email" | "tel";
+  placeholder?: string;
+  autoComplete?: string;
+  helper?: string;
 }
 
 export const QUESTIONS: QuestionDef[] = [
@@ -155,10 +163,38 @@ export const QUESTIONS: QuestionDef[] = [
     ],
   },
   {
-    id: "contact",
-    kind: "contact",
-    title: "Dernière étape avant ton guide gratuit",
-    subtitle: "Pour que Steve ou Myriam puisse te contacter avec les détails complets.",
+    id: "fullName",
+    kind: "text",
+    title: "Quel est ton nom complet ?",
+    subtitle: "Pour que Steve ou Myriam sache à qui s'adresser.",
+    inputType: "text",
+    autoComplete: "name",
+    placeholder: "Marie Tremblay",
+  },
+  {
+    id: "email",
+    kind: "text",
+    title: "Quel est ton courriel ?",
+    subtitle: "C'est là que tu recevras ton guide gratuit.",
+    inputType: "email",
+    autoComplete: "email",
+    placeholder: "marie@exemple.ca",
+  },
+  {
+    id: "phone",
+    kind: "text",
+    title: "Quel est ton numéro de téléphone ?",
+    subtitle: "Pour qu'un courtier puisse te joindre rapidement.",
+    inputType: "tel",
+    autoComplete: "tel",
+    placeholder: "(819) 555-0123",
+  },
+  {
+    id: "consent",
+    kind: "consent",
+    title: "Une dernière chose avant ton guide gratuit",
+    subtitle: "Confirme et c'est parti.",
+    autoAdvance: true,
   },
 ];
 
@@ -184,13 +220,9 @@ export function isAnswered(q: QuestionDef, a: Answers): boolean {
       if (a.workingWithBroker === "non") return true;
       if (a.workingWithBroker === "oui" && a.wantsToSwitch === true) return true;
       return false;
-    case "contact": {
-      const name = (a.fullName ?? "").trim();
-      const email = (a.email ?? "").trim();
-      const phone = (a.phone ?? "").trim();
-      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      const phoneDigits = phone.replace(/\D/g, "");
-      return !!name && emailValid && phoneDigits.length >= 10 && !!a.consent;
-    }
+    case "fullName": return !!(a.fullName ?? "").trim();
+    case "email": return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((a.email ?? "").trim());
+    case "phone": return (a.phone ?? "").replace(/\D/g, "").length >= 10;
+    case "consent": return !!a.consent;
   }
 }

@@ -10,7 +10,8 @@ import ChoiceQuestion from "./questions/ChoiceQuestion";
 import CurrencyQuestion from "./questions/CurrencyQuestion";
 import RegionMultiSearch from "./questions/RegionMultiSearch";
 import ExistingBrokerBlocker from "./questions/ExistingBrokerBlocker";
-import ContactQuestion from "./questions/ContactQuestion";
+import TextQuestion from "./questions/TextQuestion";
+import ConsentQuestion from "./questions/ConsentQuestion";
 
 interface Props {
   onComplete: (answers: Answers) => void;
@@ -34,10 +35,14 @@ const STEP_NAMES: Record<string, string> = {
   currentHomeValue: "valeur_propriete",
   employment: "emploi",
   workingWithBroker: "courtier_deja",
-  contact: "coordonnees",
+  fullName: "nom",
+  email: "courriel",
+  phone: "telephone",
+  consent: "consentement",
 };
 
-// Champs dont la valeur est un choix prédéfini → sûr à transmettre.
+// Champs dont la valeur est un choix prédéfini → sûr à transmettre. Jamais
+// fullName/email/phone (PII) : seul le nom de l'étape est suivi pour eux.
 const CHOICE_FIELDS = new Set([
   "financingStatus",
   "propertyType",
@@ -46,6 +51,7 @@ const CHOICE_FIELDS = new Set([
   "buyingWith",
   "employment",
   "workingWithBroker",
+  "consent",
 ]);
 
 function trackAnswer(partial: Partial<Answers>) {
@@ -190,6 +196,10 @@ export default function QualificationForm({ onComplete, onLongTerm, onExit }: Pr
               onUpdate={updateAndMaybeAdvance}
               autoAdvance={!!current.autoAdvance}
               choices={current.choices}
+              inputType={current.inputType}
+              placeholder={current.placeholder}
+              autoComplete={current.autoComplete}
+              helper={current.helper}
             />
           </motion.div>
         </AnimatePresence>
@@ -265,10 +275,24 @@ interface RendererProps {
   answers: Answers;
   choices?: { value: string; label: string; hint?: string }[];
   autoAdvance: boolean;
+  inputType?: "text" | "email" | "tel";
+  placeholder?: string;
+  autoComplete?: string;
+  helper?: string;
   onUpdate: (partial: Partial<Answers>, autoAdvance: boolean, delayMs?: number) => void;
 }
 
-function QuestionRenderer({ questionId, answers, choices, autoAdvance, onUpdate }: RendererProps) {
+function QuestionRenderer({
+  questionId,
+  answers,
+  choices,
+  autoAdvance,
+  inputType,
+  placeholder,
+  autoComplete,
+  helper,
+  onUpdate,
+}: RendererProps) {
   switch (questionId) {
     case "financingStatus":
       return (
@@ -372,8 +396,44 @@ function QuestionRenderer({ questionId, answers, choices, autoAdvance, onUpdate 
           onChange={(v) => onUpdate({ workingWithBroker: v as Answers["workingWithBroker"] }, autoAdvance)}
         />
       );
-    case "contact":
-      return <ContactQuestion answers={answers} onUpdate={onUpdate} />;
+    case "fullName":
+      return (
+        <TextQuestion
+          value={answers.fullName}
+          onChange={(v) => onUpdate({ fullName: v }, false)}
+          type={inputType}
+          autoComplete={autoComplete}
+          placeholder={placeholder}
+        />
+      );
+    case "email":
+      return (
+        <TextQuestion
+          value={answers.email}
+          onChange={(v) => onUpdate({ email: v }, false)}
+          type={inputType}
+          autoComplete={autoComplete}
+          placeholder={placeholder}
+        />
+      );
+    case "phone":
+      return (
+        <TextQuestion
+          value={answers.phone}
+          onChange={(v) => onUpdate({ phone: v }, false)}
+          type={inputType}
+          autoComplete={autoComplete}
+          placeholder={placeholder}
+          helper={helper}
+        />
+      );
+    case "consent":
+      return (
+        <ConsentQuestion
+          checked={!!answers.consent}
+          onChange={(v) => onUpdate({ consent: v }, autoAdvance)}
+        />
+      );
     default:
       return null;
   }
