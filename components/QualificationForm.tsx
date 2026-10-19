@@ -11,7 +11,6 @@ import CurrencyQuestion from "./questions/CurrencyQuestion";
 import RegionMultiSearch from "./questions/RegionMultiSearch";
 import ExistingBrokerBlocker from "./questions/ExistingBrokerBlocker";
 import TextQuestion from "./questions/TextQuestion";
-import ConsentQuestion from "./questions/ConsentQuestion";
 
 interface Props {
   onComplete: (answers: Answers) => void;
@@ -38,7 +37,6 @@ const STEP_NAMES: Record<string, string> = {
   fullName: "nom",
   email: "courriel",
   phone: "telephone",
-  consent: "consentement",
 };
 
 // Champs dont la valeur est un choix prédéfini → sûr à transmettre. Jamais
@@ -51,7 +49,6 @@ const CHOICE_FIELDS = new Set([
   "buyingWith",
   "employment",
   "workingWithBroker",
-  "consent",
 ]);
 
 function trackAnswer(partial: Partial<Answers>) {
@@ -425,13 +422,6 @@ function QuestionRenderer({
           autoComplete={autoComplete}
           placeholder={placeholder}
           helper={helper}
-        />
-      );
-    case "consent":
-      return (
-        <ConsentQuestion
-          checked={!!answers.consent}
-          onChange={(v) => onUpdate({ consent: v }, autoAdvance)}
         />
       );
     default:

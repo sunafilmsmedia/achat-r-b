@@ -14,10 +14,9 @@ export type QuestionId =
   | "workingWithBroker"
   | "fullName"
   | "email"
-  | "phone"
-  | "consent";
+  | "phone";
 
-export type QuestionKind = "choice" | "regions" | "currency" | "text" | "consent";
+export type QuestionKind = "choice" | "regions" | "currency" | "text";
 
 export interface Choice<V extends string = string> {
   value: V;
@@ -189,13 +188,6 @@ export const QUESTIONS: QuestionDef[] = [
     autoComplete: "tel",
     placeholder: "(819) 555-0123",
   },
-  {
-    id: "consent",
-    kind: "consent",
-    title: "Une dernière chose avant ton guide gratuit",
-    subtitle: "Confirme et c'est parti.",
-    autoAdvance: true,
-  },
 ];
 
 export function getVisibleQuestions(answers: Answers): QuestionDef[] {
@@ -223,6 +215,5 @@ export function isAnswered(q: QuestionDef, a: Answers): boolean {
     case "fullName": return !!(a.fullName ?? "").trim();
     case "email": return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((a.email ?? "").trim());
     case "phone": return (a.phone ?? "").replace(/\D/g, "").length >= 10;
-    case "consent": return !!a.consent;
   }
 }

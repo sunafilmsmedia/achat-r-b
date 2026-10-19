@@ -29,7 +29,7 @@ async function submitLead(answers: Answers): Promise<LeadResult | null> {
   const name = (answers.fullName ?? "").trim();
   const email = (answers.email ?? "").trim();
   const phone = (answers.phone ?? "").trim();
-  if (!name || !email || !answers.consent) return null;
+  if (!name || !email) return null;
 
   const [firstNameRaw, ...lastParts] = name.split(/\s+/);
   try {
